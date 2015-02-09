@@ -6,13 +6,14 @@ import xml.dom.minidom
 from datetime import datetime, timedelta
 
 # Lager et fil-objekt basert på data fra URL-en fra en webtjeneste
-f = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=Oslo,no")
+v = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=Oslo,no")
+f = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=Flekkefjord,no")
 
 # Overfører data til en Python data struktur "dict" (dictionary, - en nøkkel/verdi liste)
 wf_owm = json.load(f)
 
 
-# Du kan liste alle nøkkler med wf_own.keys()
+# Du kan liste alle nøkkler med wf_owm.keys()
 # Her "graver" jeg inn i "dict" samtidig som jeg omformatterer litt (ikke bra lesbarhet!)
 print (datetime.fromtimestamp(wf_owm['dt'])+timedelta(hours=1)).strftime('%d-%m-%Y %H:%M:%S')
 print wf_owm['wind']['speed']
@@ -21,7 +22,8 @@ print wf_owm['wind']['deg']
 
 # Lager en ny fil-objekt basert på data fra yr.no
 fxml = urllib.urlopen("http://www.yr.no/sted/Norge/Oslo/Oslo/Blindern/varsel_time_for_time.xml")
-
+fxml = urllib.urlopen("http://www.yr.no/sted/Norge/Vest-Agder/Flekkefjord/Flekkefjord/time_for_time.html")
+vxml = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=London&mode=xml")
 
 # Lager et objekt i Python (xml module er objektorientert og er mer 
 # avansert i forhold til JSON, 
@@ -37,8 +39,8 @@ collection = DOMTree.documentElement
 # 	Jeg har kommentert den ut siden den tar litt plass, men hvis koden under ikke
 # 	fungerer, bør du prøve denne
 #
-#for cn in collection.getElementsByTagName('time')[20].childNodes:
-#	print cn.nodeName
+for cn in collection.getElementsByTagName('time')[20].childNodes:
+	print cn.nodeName
 
 
 # Så "graver" vi dypere ... Ikke bra praksis med hardkoding av indekser
