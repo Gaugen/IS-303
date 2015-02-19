@@ -12,7 +12,7 @@ public class HomeGUI extends javax.swing.JFrame {
     public HomeGUI() {
         initComponents();
         getWeather();
-        getWeatherSearch();
+        getWeatherOwm();
     }
 
     private void getWeather()
@@ -25,14 +25,10 @@ public class HomeGUI extends javax.swing.JFrame {
         Country.setText(disp.getCountry());
     }
     
-    private void setCityName(String SearchText)
-    {
-        this.cityName = SearchText;
-    }
     
-    private void getWeatherSearch()
+    private void getWeatherOwm()
     {
-        WeatherDoc doc = new WeatherDoc("SearchText","c");
+        WeatherDoc doc = new WeatherDoc("","c");
         WeatherDisplay disp = new WeatherDisplay();
         Country2.setText(disp.getCountry());
         City2.setText(disp.getCity());
