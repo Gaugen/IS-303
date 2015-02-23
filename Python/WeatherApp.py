@@ -6,40 +6,13 @@ import Tkinter as tk
 from xml.dom.minidom import parse
 import xml.dom.minidom
 from datetime import datetime, timedelta
-from Tkinter import *
+
 
 
 f = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=Flekkefjord,no")
 wf_owm = json.load(f)
 
-# Weather GUI
 
-#create window
-root = Tk()
-
-#scale the window
-root.title("Weather App")
-root.geometry("500x300")
-
-app = Frame(root)
-app.grid()
-label = Label(app, text = "this is a test")
-label.grid()
-
-button1 = Button(app, text = "This is a Button")
-button1.grid()
-
-button2 = Button(app)
-button2.grid()
-button2.configure(text ="this will show text")
-
-button3 = Button(app)
-button3.grid()
-
-button3["text"] = "This will show up as well."
-
-#kick off the event loop
-root.mainloop()
 
 
 #
