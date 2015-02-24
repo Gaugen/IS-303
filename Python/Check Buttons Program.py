@@ -14,7 +14,7 @@ class Application(Frame):
         Label(self, text = "Choose your Favorite move type").grid(row = 0, column = 0, sticky = W)
 
         #instructions
-        Label(self, text = "Select all that apply:").grid(row = 1, column = 0, sticky = W)
+        Label(self, text = "Select one:").grid(row = 1, column = 0, sticky = W)
         #commedy check button
         self.comedy = BooleanVar()
         Checkbutton(self, text = "Comedy", variable = self.comedy, command = self.update_text).grid(row = 2, column = 0, sticky = W)
