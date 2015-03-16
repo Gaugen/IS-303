@@ -1,29 +1,46 @@
-import json,  urllib2, Tkinter, tkSimpleDialog, tkMessageBox
-from Tkinter import *
+import urllib
+from xml.dom import minidom
 
-def fetchHTMLYahoo(url):
-    URL = "http://weather.hosting4real.net/"+url
-    req = urllib2.Request(URL)
-    response=urllib2.urlopen(req)
-    return response.read()
+wurl = 'http://xml.weather.com/forecastrss?p=%s'
+wser = 'http://xml.weather.yahoo.com/ns/rss/1.0'
 
-def searchYahoo():    
-    input_location = tkSimpleDialog.askstring("Weather App", "Enter a Location\n")
-    output=fetchHTMLYahoo(input_location)
-    data = json.loads(output)
-    tkMessageBox.showinfo("Results", "Location: " + str(data['name']) +
-                          "\n\nCountry: "+ str(data['sys']['country']) +
-                           "\n\nLongitude: " +str(data['coord']['lon']) +
-                           "\n\nTemperature: "+str(data['main']['temp']-273.15) +" C"+
-                           "\n\nHumidity: " + str(data['main']['humidity']) + " %"+
-                           "\n\nPressure: " + str(data['main']['pressure']) + " hPa"+
-                           "\n\nWind Speed: " + str(data['wind']['speed']) + " mps" +
-                           "\n\nWeather Description: " + str(data['weather'][0]['description']))
+def weather_for_zip(zip_code):
+    url = wurl % zip_code +'&u=c'
+    dom = minidom.parse(urllib.urlopen(url))
+    forecasts = []
+    for node in dom.getElementsByTagNameNS(wser, 'forecast'):
+        forecasts.append({
+            'date': node.getAttribute('date'),
+            'low': node.getAttribute('low'),
+            'high': node.getAttribute('high'),
+            'condition': node.getAttribute('text')
+        })
+    ycondition = dom.getElementsByTagNameNS(wser, 'condition')[0]
+    return {
+        'current_condition': ycondition.getAttribute('text'),
+        'current_temp': ycondition.getAttribute('temp'),
+        'forecasts': forecasts ,
+        'title': dom.getElementsByTagName('title')[0].firstChild.data
+   }
+def main():
+    a=weather_for_zip("ROXX0003")
+    print '=================================='
+    print '|',a['title'],'|'
+    print '=================================='
+    print '|current condition=',a['current_condition']
+    print '|current temp     =',a['current_temp']
+    print '=================================='
+    print '|  today     =',a['forecasts'][0]['date']
+    print '|  hight     =',a['forecasts'][0]['high']
+    print '|  low       =',a['forecasts'][0]['low']
+    print '|  condition =',a['forecasts'][0]['condition']
+    print '=================================='
+    print '|  tomorrow  =',a['forecasts'][1]['date']
+    print '|  hight     =',a['forecasts'][1]['high']
+    print '|  low       =',a['forecasts'][1]['low']
+    print '|  condition =',a['forecasts'][1]['condition']
+    print '=================================='
+
+main()
 
 
-searchYahoo = Button(app, text = "Search on Yahoo Weather", command = searchYahoo)
-searchYahoo.grid(row=3, column=3)
-cancel = Button(app, text = "Cancel", command = cancel)
-cancel.grid(row=2, column=2)
-
-root.mainloop()
