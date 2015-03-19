@@ -17,7 +17,7 @@ DOMTree = xml.dom.minidom.parse(URL)
 collection = DOMTree.documentElement
 #print "Sted: " + collection.getElementsByTagName('location')[2].attributes['name'].value 
 #print "Fra: " + collection.getElementsByTagName('time')[4].attributes['from'].value + " til: " + collection.getElementsByTagName('time')[4].attributes['to'].value
-#print "Dag: " + collection.getElementsByTagName('title')[4].childNodes[0].data
+print "Dag: " + collection.getElementsByTagName('title')[0].childNodes[0].data
     
 def fetchXML(land, fylke, kommune, sted):
     #URL = urllib.urlopen("http://www.yr.no/sted/Norge/vest-agder/flekkefjord/flekkefjord/varsel.xml")
