@@ -63,24 +63,24 @@ wf_owm = json.load(f)
 
 # Du kan liste alle nøkkler med wf_own.keys()
 # Her "graver" jeg inn i "dict" samtidig som jeg omformatterer litt (ikke bra lesbarhet!)
-print (datetime.fromtimestamp(wf_owm['dt'])+timedelta(hours=1)).strftime('%d-%m-%Y %H:%M:%S')
-print wf_owm['wind']['speed']
-print wf_owm['wind']['deg']
+#print (datetime.fromtimestamp(wf_owm['dt'])+timedelta(hours=1)).strftime('%d-%m-%Y %H:%M:%S')
+#print wf_owm['wind']['speed']
+#print wf_owm['wind']['deg']
 
 
 # Lager en ny fil-objekt basert på data fra yr.no
 fxml = urllib.urlopen("http://www.yr.no/sted/Norge/Oslo/Oslo/Blindern/varsel_time_for_time.xml")
-lxml = urllib.urlopen("http://api.openweathermap.org/data/2.5/weather?q=London&mode=xml")
+tull = urllib.urlopen("http://www.yr.no/sted/Norge/vest-agder/flekkefjord/flekkefjord/varsel.xml")
 
 # Lager et objekt i Python (xml module er objektorientert og er mer 
 # avansert i forhold til JSON, 
 # se https://docs.python.org/2/library/xml.dom.html)
-DOMTree = xml.dom.minidom.parse(fxml)
-DOMTree = xml.dom.minidom.parse(lxml)
+#DOMTree = xml.dom.minidom.parse(fxml)
+DOMTree = xml.dom.minidom.parse(tull)
 
 # Så "graver" vi inn i objekt-strukturen til DOMTree dokument-objektet (som i JavaScript)
 collection = DOMTree.documentElement
-
+#forecast = DOMTree.documentElement
 #
 # 	Her er et eksempel på en løkke for å liste ut alle barne-noder under time elementet
 # 	Jeg har kommentert den ut siden den tar litt plass, men hvis koden under ikke
@@ -93,12 +93,62 @@ collection = DOMTree.documentElement
 # Så "graver" vi dypere ... Ikke bra praksis med hardkoding av indekser
 # Kan du finne en løsning for å unngå det?
 #Dette er for Oslo gjennom yr.
-print collection.getElementsByTagName('time')[20].attributes['from'].value
-print collection.getElementsByTagName('time')[20].childNodes[11].attributes['mps'].value
+#print collection.getElementsByTagName('time')[20].attributes['from'].value
+#print collection.getElementsByTagName('time')[20].childNodes[11].attributes['mps'].value
 # Elementet windDirection har attributter deg, code og name
-print collection.getElementsByTagName('time')[20].childNodes[9].attributes['deg'].value
 
-#Dette er for London gjennom openweather
+
+#Vær fra varsel og ikke time for time
+print "From: " + collection.getElementsByTagName('time')[1].attributes['from'].value + " To: " + collection.getElementsByTagName('time')[1].attributes['to'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[1].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[1].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['mps'].value + " Meter i sekundet"
+print "Tilstand: " + collection.getElementsByTagName('time')[1].childNodes[3].attributes['name'].value
+print "Temperatur: " + collection.getElementsByTagName('time')[1].childNodes[13].attributes['value'].value + " " + collection.getElementsByTagName('time')[1].childNodes[13].attributes['unit'].value
+print "Nedbor: " + collection.getElementsByTagName('time')[1].childNodes[5].attributes['value'].value + " mm"
+print "---------------------------------------------------------------------------"
+print "From: " + collection.getElementsByTagName('time')[19].attributes['from'].value + " To: " + collection.getElementsByTagName('time')[19].attributes['to'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[19].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['mps'].value + " Meter i sekundet"
+print "Tilstand: " + collection.getElementsByTagName('time')[19].childNodes[3].attributes['name'].value
+print "Temperatur: " + collection.getElementsByTagName('time')[19].childNodes[13].attributes['value'].value + " " + collection.getElementsByTagName('time')[18].childNodes[13].attributes['unit'].value
+print "Nedbor: " + collection.getElementsByTagName('time')[19].childNodes[5].attributes['value'].value + " mm"
+print "---------------------------------------------------------------------------"
+print "From: " + collection.getElementsByTagName('time')[20].attributes['from'].value + " To: " + collection.getElementsByTagName('time')[20].attributes['to'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[20].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['mps'].value + " Meter i sekundet"
+print "Tilstand: " + collection.getElementsByTagName('time')[20].childNodes[3].attributes['name'].value
+print "Temperatur: " + collection.getElementsByTagName('time')[20].childNodes[13].attributes['value'].value + " " + collection.getElementsByTagName('time')[18].childNodes[13].attributes['unit'].value
+print "Nedbor: " + collection.getElementsByTagName('time')[20].childNodes[5].attributes['value'].value + " mm"
+print "---------------------------------------------------------------------------"
+print "From: " + collection.getElementsByTagName('time')[21].attributes['from'].value + " To: " + collection.getElementsByTagName('time')[21].attributes['to'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[21].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['mps'].value + " Meter i sekundet"
+print "Tilstand: " + collection.getElementsByTagName('time')[21].childNodes[3].attributes['name'].value
+print "Temperatur: " + collection.getElementsByTagName('time')[21].childNodes[13].attributes['value'].value + " " + collection.getElementsByTagName('time')[18].childNodes[13].attributes['unit'].value
+print "Nedbor: " + collection.getElementsByTagName('time')[21].childNodes[5].attributes['value'].value + " mm"
+print "---------------------------------------------------------------------------"
+
+# WindDirection er 9, Windspeed er 11, symbol er 3, pressure er 15, temprature er 13, precipitation er 5
+
+"""
+print " Her er Været fra yr.no"
+print collection.getElementsByTagName('time')[20].attributes['from'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[20].childNodes[9].attributes['name'].value 
+print collection.getElementsByTagName('time')[20].childNodes[9].attributes['deg'].value + " Retningsgrader"
+print "Tilstand: " + collection.getElementsByTagName('time')[20].childNodes[3].attributes['name'].value
+print "Vindstyrke: " + collection.getElementsByTagName('time')[20].childNodes[11].attributes['mps'].value + " mps"
+"""
+"""
+print " Her er Været fra yr.no"
+print collection.getElementsByTagName('location')[0]
+print collection.getElementsByTagName('time')[15].attributes['from'].value
+print "Vindretning: " + collection.getElementsByTagName('time')[20].childNodes[9].attributes['name'].value 
+print collection.getElementsByTagName('time')[15].childNodes[9].attributes['deg'].value + " Retningsgrader"
+print "Tilstand: " + collection.getElementsByTagName('time')[15].childNodes[3].attributes['name'].value
+print "Vindstyrke: " + collection.getElementsByTagName('time')[15].childNodes[11].attributes['mps'].value + " mps"
+"""
+#print forecast.getElementsByTagName('time')[20].attributes['from'].value
+#print forecast.getElementsByTagName('time')[20].childNodes[11].attributes['mps'].value
+#print forecast.getElementsByTagName('time')[20].childNodes[9].attributes['deg'].value
+#print forecast.getElementsByTagName('location')[0].childNodes[0].attributes['name'].value
+
+
 #print collection.getElementsByTagName('time')[20].attributes['from'].value
 
 #
@@ -108,3 +158,4 @@ print collection.getElementsByTagName('time')[20].childNodes[9].attributes['deg'
 #	
 #	Reflekter om fordeler/ulemper angående JSON og XML :)
 #
+
