@@ -23,14 +23,14 @@ print("Results", "Location: " + str(data['name']) +
 
 
 
-YR = urllib.urlopen("http://www.yr.no/sted/Norge/Vest-Agder/Flekkefjord/Flekkefjord/varsel.xml")
+YR = urllib.urlopen("http://www.yr.no/sted/Norge/Vest-Agder/Flekkefjord/Flekkefjord/varsel_time_for_time.xml")
 DOMTree = xml.dom.minidom.parse(YR)
 collection = DOMTree.documentElement
 
 #Vær fra varsel og ikke time for time
 print "---------------------------------------------------------------------------"
 print "From: " + collection.getElementsByTagName('time')[5].attributes['from'].value + " To: " + collection.getElementsByTagName('time')[5].attributes['to'].value
-print "Vindretning: " + collection.getElementsByTagName('time')[5].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[5].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[18].childNodes[11].attributes['mps'].value + " Meter i sekundet"
+print "Vindretning: " + collection.getElementsByTagName('time')[5].childNodes[9].attributes['name'].value +  " Vindstyrke: " + collection.getElementsByTagName('time')[5].childNodes[11].attributes['name'].value + " " + collection.getElementsByTagName('time')[5].childNodes[11].attributes['mps'].value + " Meter i sekundet"
 print "Tilstand: " + collection.getElementsByTagName('time')[5].childNodes[3].attributes['name'].value
 print "Temperatur: " + collection.getElementsByTagName('time')[5].childNodes[13].attributes['value'].value + " " + collection.getElementsByTagName('time')[5].childNodes[13].attributes['unit'].value
 print "Nedbor: " + collection.getElementsByTagName('time')[5].childNodes[5].attributes['value'].value + " mm"
